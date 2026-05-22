@@ -65,14 +65,20 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # ============================================================
 
 class GNNWithGlobal(nn.Module):
-    def __init__(self, node_in, global_in, hidden):
+    def __init__(self, node_in, global_in, hidden, mlp_hidden=128):
+        """
+        mlp_hidden : intermediate MLP width.
+            Defaults to 128 to match the original train.py hardcoded value.
+            load_bundle() always reads the true value from the checkpoint's
+            state_dict so this default is never used at inference.
+        """
         super().__init__()
         self.conv1 = GCNConv(node_in, hidden)
         self.conv2 = GCNConv(hidden, hidden)
         self.mlp = nn.Sequential(
-            nn.Linear(hidden + global_in, 128),
+            nn.Linear(hidden + global_in, mlp_hidden),
             nn.ReLU(),
-            nn.Linear(128, 1),
+            nn.Linear(mlp_hidden, 1),
         )
 
     def forward(self, batch):
@@ -113,28 +119,49 @@ def load_bundle(model_path: str):
     """
     Load the model bundle saved by train.py.
 
+    All architecture dimensions are inferred directly from the saved
+    state_dict so this function is robust to any HIDDEN value or MLP
+    depth that was used at train time — no hardcoded sizes.
+
     Returns
     -------
-    model      : GNNWithGlobal in eval mode on the correct device
-    scaler     : SavedScaler reconstructed from bundle["scaler_state"]
-    config     : dict with training hyperparameters and feature list
+    model  : GNNWithGlobal in eval mode on the correct device
+    scaler : SavedScaler reconstructed from bundle["scaler_state"]
+    config : dict with training hyperparameters and feature list
     """
     bundle = torch.load(model_path, map_location=device)
+    sd     = bundle["state_dict"]
+    config = bundle["config"]
 
-    config     = bundle["config"]
-    node_in    = config["node_in"]
-    global_in  = config["global_in"]
-    hidden     = config.get("hidden", 128)
+    # --- Read dims from config (source of truth) ---
+    node_in   = config["node_in"]
+    global_in = config["global_in"]
+    hidden    = config.get("hidden", 128)
 
-    model = GNNWithGlobal(node_in=node_in, global_in=global_in, hidden=hidden)
-    model.load_state_dict(bundle["state_dict"])
+    # --- Infer mlp_hidden from the saved weight shape ---
+    # mlp.0.weight has shape (mlp_hidden, hidden + global_in)
+    # This is always correct regardless of what was hardcoded in any version
+    # of train.py, because it reads the checkpoint directly.
+    if "mlp.0.weight" in sd:
+        mlp_hidden = sd["mlp.0.weight"].shape[0]
+    else:
+        mlp_hidden = 128   # fallback for malformed bundles only
+    
+    model = GNNWithGlobal(
+        node_in    = node_in,
+        global_in  = global_in,
+        hidden     = hidden,
+        mlp_hidden = mlp_hidden,
+    )
+    model.load_state_dict(sd)
     model.to(device)
     model.eval()
 
     scaler = SavedScaler(bundle["scaler_state"])
 
     print(f"Loaded model from: {model_path}")
-    print(f"  node_in={node_in}  global_in={global_in}  hidden={hidden}")
+    print(f"  node_in={node_in}  global_in={global_in}  "
+          f"hidden={hidden}  mlp_hidden={mlp_hidden}")
     print(f"  NIS mode : {config.get('nis', False)}")
     print(f"  Trained  : {config.get('created', 'unknown')}")
     print(f"  OOF metrics (train CV):")
