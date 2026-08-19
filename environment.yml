@@ -18,6 +18,11 @@ dependencies:
 
   # Bioinformatics
   - biopython>=1.83
+  - requests>=2.31
+  - mdanalysis>=2.6
+  - freesasa>=2.2
+  - openmm>=8.2
+  - pdbfixer>=1.9
 
   # PyTorch — install the CPU build by default;
   # replace 'cpuonly' with the appropriate cudatoolkit version for GPU use
@@ -25,10 +30,5 @@ dependencies:
   - pytorch>=2.1
   - cpuonly                 # ← swap this out for GPU (see Readme)
 
-  - pip:
-      # PyG and its sparse/scatter dependencies are most reliably installed
-      # via pip even inside a conda environment
-      - torch-geometric>=2.4
-      - torch-scatter
-      - torch-sparse
-      - torch-cluster
+  # PyTorch Geometric and compatible compiled extensions
+  - pyg>=2.4

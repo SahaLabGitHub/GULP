@@ -18,13 +18,13 @@ Pipeline
 Usage — prediction only (no labels):
     python test.py \
         --pdb_dirs /path/to/test_pdbs \
-        --model_path /path/to/model.pt \
+        --model_path models/model.pt \
         --out_dir /path/to/test_out
 
 Usage — with labels for benchmarking:
     python test.py \
         --pdb_dirs /path/to/test_pdbs \
-        --model_path /path/to/model.pt \
+        --model_path models/model.pt \
         --out_dir /path/to/test_out \
         --labels_csv /path/to/test_labels.csv \
         --target_col exp_dG \
@@ -50,7 +50,7 @@ from torch_geometric.nn import GCNConv, global_mean_pool
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from scipy.stats import pearsonr, spearmanr
 
-from PPI_GNN.extract_features import extract_all, GLOBAL_FEATURES
+from GULP.extract_features import extract_all, GLOBAL_FEATURES
 
 
 # ============================================================

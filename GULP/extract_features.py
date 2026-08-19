@@ -45,10 +45,7 @@ from MDAnalysis.analysis.hydrogenbonds.hbond_analysis import HydrogenBondAnalysi
 from MDAnalysis.lib.distances import distance_array
 from Bio.PDB import PDBParser, NeighborSearch
 
-try:
-    from graph_utils import Data
-except ImportError:
-    from pipeline_scripts.graph_utils import Data
+from .graph_utils import Data
 
 # Helper to parse residue numbers that may include insertion codes (e.g. '83C')
 # Some PDBs embed insertion codes in the residue ID field (e.g. '184A').
@@ -63,16 +60,7 @@ def _resid_to_int(resid):
 
 
 # For interface-only graphs (23-dim) when --nis is not requested
-try:
-    from pipeline_scripts.graph_features_old_keep import build_graph as build_graph_interface
-except ImportError:
-    try:
-        from graph_features_old_keep import build_graph as build_graph_interface
-    except ImportError as e:
-        raise ImportError(
-            "Could not import build_graph_interface from pipeline_scripts.graph_features_old_keep or graph_features_old_keep. "
-            "Ensure this script is run from the repo root or that Python path includes the repo root."
-        ) from e
+from .graph_features_old_keep import build_graph as build_graph_interface
 
 
 # ============================================================
