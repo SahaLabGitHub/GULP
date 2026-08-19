@@ -6,7 +6,7 @@
 
 GULP is a graph neural network for predicting protein–protein binding free energies (ΔG) from protein complex structures. It combines residue-level interface graphs with global physicochemical descriptors.
 
-On external validation, the model achieved a mean absolute error of 2.31 kcal/mol, with Pearson \(r = 0.54\) and Spearman \(\rho = 0.58\).
+On external validation, the model achieved a mean absolute error of 2.31 kcal/mol, with Pearson \(r = 0.54\) and Spearman \(rho = 0.58\).
 
 Link to article: https://doi.org/10.1021/acsphyschemau.6c00060
 
