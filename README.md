@@ -4,6 +4,8 @@
 
 Predicting protein–protein binding free energy (ΔG) from structure remains a central challenge in computational biophysics. Here, we present a graph neural network (GNN) that jointly learns from a residue-level graph representation of the binding interface with global physicochemical descriptors. We systematically investigate how training data dis-tribution affects model performance by comparing a full training set with a balanced subset enriched for extreme-affinity complexes. The proposed model is computationally efficient and provides interpretable insights into residue-level and physi-cochemical contributions to binding. On external validation, the model achieves a mean absolute er-ror (MAE) of 2.31 kcal/mol and shows moderate agreement with experimental ΔG values (Pearson r = 0.54, Spearman ρ = 0.58). 
 
+Link to article: https://doi.org/10.1021/acsphyschemau.6c00060
+
 For inference, please follow the steps below:
 
 ## Create and activate the environment
