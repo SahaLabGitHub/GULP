@@ -50,7 +50,7 @@ from torch_geometric.nn import GCNConv, global_mean_pool
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from scipy.stats import pearsonr, spearmanr
 
-from PPI_GNN.extract_features import extract_all, GLOBAL_FEATURES
+from GULP.extract_features import extract_all, GLOBAL_FEATURES
 
 
 # ============================================================

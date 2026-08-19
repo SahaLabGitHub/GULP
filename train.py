@@ -59,7 +59,7 @@ from datetime import datetime
 from Bio import Align
 from Bio.Align import substitution_matrices
 
-from PPI_GNN.extract_features import extract_all, GLOBAL_FEATURES
+from GULP.extract_features import extract_all, GLOBAL_FEATURES
 
 
 # ============================================================

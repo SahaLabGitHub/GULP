@@ -18,6 +18,11 @@ dependencies:
 
   # Bioinformatics
   - biopython>=1.83
+- requests>=2.31
+- mdanalysis>=2.6
+- freesasa>=2.2
+- openmm>=8.2
+- pdbfixer>=1.9
 
   # PyTorch — install the CPU build by default;
   # replace 'cpuonly' with the appropriate cudatoolkit version for GPU use
