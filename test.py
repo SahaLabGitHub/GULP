@@ -18,13 +18,13 @@ Pipeline
 Usage — prediction only (no labels):
     python test.py \
         --pdb_dirs /path/to/test_pdbs \
-        --model_path /path/to/model.pt \
+        --model_path models/model.pt \
         --out_dir /path/to/test_out
 
 Usage — with labels for benchmarking:
     python test.py \
         --pdb_dirs /path/to/test_pdbs \
-        --model_path /path/to/model.pt \
+        --model_path models/model.pt \
         --out_dir /path/to/test_out \
         --labels_csv /path/to/test_labels.csv \
         --target_col exp_dG \
